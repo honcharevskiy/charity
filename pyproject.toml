@@ -14,6 +14,7 @@ ruff = "^0.3.4"
 django-storages = {extras = ["s3"], version = "^1.14.2"}
 django-resized = "^1.0.2"
 pillow = "^10.3.0"
+gunicorn = "^22.0.0"
 
 
 [build-system]
