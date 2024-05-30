@@ -1,4 +1,5 @@
 from django.db import models
+from django_resized import ResizedImageField
 from mdeditor.fields import MDTextField
 
 
@@ -34,7 +35,7 @@ class Category(models.Model):
 class ProjectImage(models.Model):
     """Image related to project."""
 
-    image = models.FileField()
+    image = ResizedImageField(size=[1000, 800], force_format='JPEG')
     alternative_text = models.CharField(max_length=255)
 
     def __str__(self):
@@ -59,9 +60,9 @@ class Project(models.Model):
     en_title = models.CharField(max_length=370, null=True, blank=True)
     en_description = MDTextField(null=True, blank=True)
 
-    goal = models.BigIntegerField(verbose_name="Accumulation goal.")
+    goal = models.BigIntegerField(verbose_name='Accumulation goal.')
     accumulated_current = models.BigIntegerField(
-        verbose_name="How much money already accumulated."
+        verbose_name='How much money already accumulated.'
     )
 
     ua_timeline = models.BooleanField(default=True, blank=True)

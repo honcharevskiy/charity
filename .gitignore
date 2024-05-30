@@ -1,8 +1,10 @@
 .idea/
 .terraform.lock.hcl
+.terraform.tfstate*
 .terraform/
 *.pyc
 db.*
 mediafiles/*
+static/*
 */__pycache__/*
 *.tfstate

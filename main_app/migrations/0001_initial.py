@@ -6,17 +6,23 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
             name='Account',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                (
+                    'id',
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name='ID',
+                    ),
+                ),
                 ('title', models.CharField(max_length=255)),
                 ('iban', models.CharField(blank=True, max_length=255, null=True)),
                 ('description', mdeditor.fields.MDTextField(blank=True, null=True)),
@@ -29,7 +35,15 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Category',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                (
+                    'id',
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name='ID',
+                    ),
+                ),
                 ('name', models.CharField(max_length=255)),
                 ('en_name', models.CharField(blank=True, max_length=255, null=True)),
             ],
@@ -41,7 +55,15 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='ProjectImage',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                (
+                    'id',
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name='ID',
+                    ),
+                ),
                 ('image', models.FileField(upload_to='')),
                 ('alternative_text', models.CharField(max_length=255)),
             ],
@@ -53,20 +75,39 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Project',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                (
+                    'id',
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name='ID',
+                    ),
+                ),
                 ('title', models.CharField(blank=True, max_length=370, null=True)),
                 ('description', mdeditor.fields.MDTextField(blank=True, null=True)),
                 ('en_title', models.CharField(blank=True, max_length=370, null=True)),
                 ('en_description', mdeditor.fields.MDTextField(blank=True, null=True)),
                 ('goal', models.BigIntegerField(verbose_name='Accumulation goal.')),
-                ('accumulated_current', models.BigIntegerField(verbose_name='How much money already accumulated.')),
+                (
+                    'accumulated_current',
+                    models.BigIntegerField(
+                        verbose_name='How much money already accumulated.'
+                    ),
+                ),
                 ('ua_timeline', models.BooleanField(blank=True, default=True)),
                 ('en_timeline', models.BooleanField(blank=True, default=False)),
                 ('is_finished', models.BooleanField(default=False)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
                 ('accounts', models.ManyToManyField(to='main_app.account')),
-                ('category', models.ForeignKey(on_delete=django.db.models.deletion.DO_NOTHING, to='main_app.category')),
+                (
+                    'category',
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        to='main_app.category',
+                    ),
+                ),
                 ('images', models.ManyToManyField(to='main_app.projectimage')),
             ],
             options={

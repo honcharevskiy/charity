@@ -11,7 +11,6 @@ class CategoryAdmin(admin.ModelAdmin):
 
 
 class ProjectsAdmin(admin.ModelAdmin):
-
     exclude = ['ua_timeline', 'en_timeline']
     pass
 
