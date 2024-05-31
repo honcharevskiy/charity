@@ -27,7 +27,7 @@ class CategoriesList(mixins.ListModelMixin, GenericAPIView):
     @extend_schema(
         parameters=[
             OpenApiParameter(
-                name='lan',
+                name='language',
                 description='Expected response language',
                 required=False,
                 type=str,
@@ -52,7 +52,7 @@ class ProjectList(mixins.ListModelMixin, GenericAPIView):
     @extend_schema(
         parameters=[
             OpenApiParameter(
-                name='lan',
+                name='language',
                 description='Expected response language',
                 required=False,
                 type=str,

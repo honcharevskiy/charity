@@ -8,7 +8,7 @@ class CategoryTestCase(TestCase):
         models.Category.objects.create(name='Humanitarian', en_name='Not to kill')
 
     def test_get_all_categories(self):
-        response = self.client.get('/main/categories')
+        response = self.client.get('/categories')
         assert response.status_code == 200
         assert response.json() == [
             {'id': 1, 'name': 'Kill'},
@@ -16,7 +16,7 @@ class CategoryTestCase(TestCase):
         ]
 
     def test_get_all_categories_in_en(self):
-        response = self.client.get('/main/categories', {'lan': 'en'})
+        response = self.client.get('/categories', {'language': 'en'})
         assert response.status_code == 200
         assert response.json() == [{'id': 2, 'name': 'Not to kill'}]
 
@@ -29,8 +29,8 @@ class AccountsTestCase(TestCase):
         )
 
     def test_get_all_accounts(self):
-        response = self.client.get('/main/accounts')
-        assert response.status_code == 200
+        response = self.client.get('/accounts')
+        assert response.status_code == 200, response
         assert response.json() == [
             {
                 'id': self.account_1.id,
@@ -99,33 +99,33 @@ class ProjectsTestCase(TestCase):
         self.project_diff_category_and_language.accounts.add(self.account)
 
     def test_get_projects(self):
-        response = self.client.get('/main/projects')
+        response = self.client.get('/projects')
         assert response.status_code == 200
         assert len(response.json()) == 4
 
     def test_get_en_projects(self):
-        response = self.client.get('/main/projects', {'lan': 'en'})
+        response = self.client.get('/projects', {'language': 'en'})
         assert response.status_code == 200
         assert len(response.json()) == 2
         assert response.json()[0]['id'] == self.project_en.id
 
     def test_get_projects_by_category(self):
-        response = self.client.get('/main/projects', {'category_id': self.category_2.id})
+        response = self.client.get('/projects', {'category_id': self.category_2.id})
         assert response.status_code == 200
         assert len(response.json()) == 1
         assert response.json()[0]['id'] == self.project_diff_category.id
 
     def test_get_projects_by_category_and_language(self):
         response = self.client.get(
-            '/main/projects',
-            {'category_id': self.category_3.id, 'lan': 'en'},
+            '/projects',
+            {'category_id': self.category_3.id, 'language': 'en'},
         )
         assert response.status_code == 200
         assert len(response.json()) == 1
         assert response.json()[0]['id'] == self.project_diff_category_and_language.id
 
     def test_do_not_return_finished_projects(self):
-        first_response = self.client.get('/main/projects')
+        first_response = self.client.get('/projects')
         self.finished_project = models.Project.objects.create(
             category=self.category,
             title='Finished project',
@@ -136,5 +136,5 @@ class ProjectsTestCase(TestCase):
         )
         self.finished_project.save()
         self.finished_project.accounts.add(self.account)
-        second_response = self.client.get('/main/projects')
+        second_response = self.client.get('/projects')
         assert len(first_response.json()) == len(second_response.json())

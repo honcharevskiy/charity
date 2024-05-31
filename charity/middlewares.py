@@ -10,6 +10,6 @@ class LanguageMiddleware:
         self.get_response = get_response
 
     def __call__(self, request: HttpRequest):
-        request.language = request.GET.get('lan', settings.DEFAULT_LANGUAGE).lower()
+        request.language = request.GET.get('language', settings.DEFAULT_LANGUAGE).lower()
         response = self.get_response(request)
         return response
