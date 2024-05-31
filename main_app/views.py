@@ -1,6 +1,8 @@
 from django.http import HttpResponse, HttpRequest
 from drf_spectacular.utils import OpenApiParameter, extend_schema
 from rest_framework.generics import GenericAPIView
+from rest_framework.response import Response
+from rest_framework.viewsets import ReadOnlyModelViewSet
 
 from charity import settings
 from main_app import models
@@ -45,7 +47,7 @@ class CategoriesList(mixins.ListModelMixin, GenericAPIView):
         return models.Category.objects.all()
 
 
-class ProjectList(mixins.ListModelMixin, GenericAPIView):
+class ProjectList(ReadOnlyModelViewSet, GenericAPIView):
     queryset = models.Project.objects.filter(is_finished=False)
     serializer_class = serializers.ProjectSerializer
 
@@ -65,8 +67,12 @@ class ProjectList(mixins.ListModelMixin, GenericAPIView):
             ),
         ]
     )
-    def get(self, request: HttpRequest, *args, **kwargs):
-        return self.list(request, *args, **kwargs)
+    def list(self, request: HttpRequest):
+        queryset = self.filter_queryset(self.get_queryset())
+        serializer = serializers.ProjectSerializer(
+            queryset, many=True, context={'request': self.request}
+        )
+        return Response(serializer.data)
 
     def filter_queryset(self, queryset):
         """Keep only those project that translated to current language."""
@@ -78,3 +84,23 @@ class ProjectList(mixins.ListModelMixin, GenericAPIView):
             return self.queryset.filter(en_timeline=True)
 
         return self.queryset.filter(ua_timeline=True)
+
+
+class RelatedProjects(GenericAPIView):
+    """Get related project in same category as this project."""
+
+    queryset = models.Project.objects.all()
+    serializer_class = serializers.ProjectSerializer
+
+    def get(self, request, *args, **kwargs):
+        project: models.Project = self.get_object()
+        category_id = project.category.id
+        related_projects = models.Project.objects.filter(
+            category=category_id,
+        ).exclude(
+            id=project.pk,
+        )
+        serializer = serializers.ProjectSerializer(
+            related_projects, many=True, context={'request': request}
+        )
+        return Response(serializer.data)
