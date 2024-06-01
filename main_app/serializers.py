@@ -16,6 +16,15 @@ class CategorySerializer(serializers.ModelSerializer):
     """Serialize category."""
 
     name = serializers.SerializerMethodField(source='get_name', read_only=True)
+    description = serializers.SerializerMethodField(
+        source='get_description', read_only=True
+    )
+    statistic_info = serializers.SerializerMethodField(
+        source='get_statistic_info', read_only=True
+    )
+    statistic_additional_info = serializers.SerializerMethodField(
+        source='get_statistic_additional_info', read_only=True
+    )
 
     def get_name(self, category: models.Category) -> str:
         if self.context['request'].language == settings.DEFAULT_LANGUAGE:
@@ -23,9 +32,34 @@ class CategorySerializer(serializers.ModelSerializer):
 
         return category.en_name
 
+    def get_description(self, category: models.Category) -> str:
+        if self.context['request'].language == settings.DEFAULT_LANGUAGE:
+            return category.description
+
+        return category.en_description
+
+    def get_statistic_info(self, category: models.Category) -> str:
+        if self.context['request'].language == settings.DEFAULT_LANGUAGE:
+            return category.statistic_info
+
+        return category.en_statistic_info
+
+    def get_statistic_additional_info(self, category: models.Category) -> str:
+        if self.context['request'].language == settings.DEFAULT_LANGUAGE:
+            return category.statistic_additional_info
+
+        return category.en_statistic_additional_info
+
     class Meta:
         model = models.Category
-        fields = ['id', 'name']
+        fields = [
+            'id',
+            'name',
+            'statistic_additional_info',
+            'statistic_info',
+            'description',
+            'statistic_counter',
+        ]
 
 
 class ProjectSerializer(serializers.ModelSerializer):

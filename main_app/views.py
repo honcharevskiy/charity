@@ -94,9 +94,8 @@ class RelatedProjects(GenericAPIView):
 
     def get(self, request, *args, **kwargs):
         project: models.Project = self.get_object()
-        category_id = project.category.id
         related_projects = models.Project.objects.filter(
-            category=category_id,
+            category=project.category.id,
         ).exclude(
             id=project.pk,
         )

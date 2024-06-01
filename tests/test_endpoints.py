@@ -4,21 +4,64 @@ from main_app import models
 
 class CategoryTestCase(TestCase):
     def setUp(self):
-        models.Category.objects.create(name='Kill')
-        models.Category.objects.create(name='Humanitarian', en_name='Not to kill')
+        models.Category.objects.create(
+            name='Kill',
+            description='Kill long description',
+            statistic_counter=321,
+            statistic_info='Kill Drons',
+            statistic_additional_info='Kill FPV drones',
+        )
+        models.Category.objects.create(
+            name='Humanitarian',
+            en_name='Not to kill',
+            description='long description',
+            en_description='long description but in Eng',
+            statistic_counter=123,
+            statistic_info='Drons',
+            statistic_additional_info='FPV drones',
+            en_statistic_info='Drones EN',
+            en_statistic_additional_info='FPV Drones EN',
+        )
 
     def test_get_all_categories(self):
         response = self.client.get('/categories')
         assert response.status_code == 200
-        assert response.json() == [
-            {'id': 1, 'name': 'Kill'},
-            {'id': 2, 'name': 'Humanitarian'},
-        ]
+        sort_key = lambda x: x['id']
+        assert sorted(response.json(), key=sort_key) == sorted(
+            [
+                {
+                    'id': 1,
+                    'name': 'Kill',
+                    'description': 'Kill long description',
+                    'statistic_counter': 321,
+                    'statistic_info': 'Kill Drons',
+                    'statistic_additional_info': 'Kill FPV drones',
+                },
+                {
+                    'id': 2,
+                    'name': 'Humanitarian',
+                    'description': 'long description',
+                    'statistic_counter': 123,
+                    'statistic_info': 'Drons',
+                    'statistic_additional_info': 'FPV drones',
+                },
+            ],
+            key=sort_key,
+        )
 
     def test_get_all_categories_in_en(self):
         response = self.client.get('/categories', {'language': 'en'})
         assert response.status_code == 200
-        assert response.json() == [{'id': 2, 'name': 'Not to kill'}]
+        assert response.json() == [
+            {
+                'id': 2,
+                'name': 'Not to kill',
+                'description': 'long description but in Eng',
+                'statistic_counter': 123,
+                'statistic_info': 'Drones EN',
+                'statistic_additional_info': 'FPV Drones EN',
+            }
+        ]
 
 
 class AccountsTestCase(TestCase):
@@ -155,7 +198,14 @@ class ProjectsTestCase(TestCase):
                     'description': None,
                 }
             ],
-            'category': {'id': self.category.id, 'name': 'Humanitarian'},
+            'category': {
+                'id': self.category.id,
+                'name': self.category.name,
+                'statistic_additional_info': self.category.statistic_additional_info,
+                'statistic_info': self.category.statistic_info,
+                'description': self.category.description,
+                'statistic_counter': self.category.statistic_counter,
+            },
         }
         assert response.json() == expected
 
