@@ -80,7 +80,7 @@ class Project(models.Model):
     en_timeline = models.BooleanField(default=False, blank=True)
 
     accounts = models.ManyToManyField(Account)
-    images = models.ManyToManyField(ProjectImage)
+    images = models.ManyToManyField(ProjectImage, null=True, blank=True)
     category = models.ForeignKey(Category, on_delete=models.DO_NOTHING)
 
     is_finished = models.BooleanField(default=False)

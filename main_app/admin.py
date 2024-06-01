@@ -10,8 +10,15 @@ class CategoryAdmin(admin.ModelAdmin):
     pass
 
 
+class AccountInline(admin.TabularInline):
+    model = models.Project.accounts.through
+    extra = 1
+    min_num = 3
+
+
 class ProjectsAdmin(admin.ModelAdmin):
-    exclude = ['ua_timeline', 'en_timeline']
+    exclude = ['ua_timeline', 'en_timeline', 'accounts']
+    inlines = [AccountInline]
     pass
 
 
