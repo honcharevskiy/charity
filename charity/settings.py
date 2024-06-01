@@ -15,7 +15,10 @@ from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-LOCAL = bool(os.getenv('LOCAL', True))
+try:
+    LOCAL = bool(int(os.getenv('LOCAL', True)))
+except ValueError:
+    LOCAL = True
 
 
 # Quick-start development settings - unsuitable for production
