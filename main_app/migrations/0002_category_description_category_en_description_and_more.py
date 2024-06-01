@@ -6,7 +6,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('main_app', '0001_initial'),
     ]
@@ -50,6 +49,14 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='projectimage',
             name='image',
-            field=django_resized.forms.ResizedImageField(crop=None, force_format='JPEG', keep_meta=True, quality=-1, scale=None, size=[1000, 800], upload_to=''),
+            field=django_resized.forms.ResizedImageField(
+                crop=None,
+                force_format='JPEG',
+                keep_meta=True,
+                quality=-1,
+                scale=None,
+                size=[1000, 800],
+                upload_to='',
+            ),
         ),
     ]
