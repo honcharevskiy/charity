@@ -73,14 +73,14 @@ class ProjectSerializer(serializers.ModelSerializer):
     accounts = AccountSerializer(many=True)
 
     def get_title(self, project: models.Project) -> str:
-        """Chose default of en title based on language."""
+        """Chose default or en title based on language."""
         if self.context['request'].language == settings.DEFAULT_LANGUAGE:
             return project.title
 
         return project.en_title
 
     def get_description(self, project: models.Project) -> str:
-        """Chose default of en description based on language."""
+        """Chose default or en description based on language."""
         if self.context['request'].language == settings.DEFAULT_LANGUAGE:
             return project.description
 
@@ -96,4 +96,35 @@ class ProjectSerializer(serializers.ModelSerializer):
             'accumulated_current',
             'accounts',
             'category',
+        ]
+
+
+class FounderSerializer(serializers.ModelSerializer):
+    """Serialize founder info to json format."""
+
+    name = serializers.SerializerMethodField(source='get_name', read_only=True)
+    description = serializers.SerializerMethodField(
+        source='get_description', read_only=True
+    )
+
+    def get_name(self, founder: models.Founder) -> str:
+        """Chose default or en title based on language."""
+        if self.context['request'].language == settings.DEFAULT_LANGUAGE:
+            return founder.name
+
+        return founder.en_name
+
+    def get_description(self, founder: models.Project) -> str:
+        """Chose default or en description based on language."""
+        if self.context['request'].language == settings.DEFAULT_LANGUAGE:
+            return founder.description
+
+        return founder.en_description
+
+    class Meta:
+        model = models.Founder
+        fields = [
+            'id',
+            'name',
+            'description',
         ]

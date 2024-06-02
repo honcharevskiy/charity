@@ -26,7 +26,13 @@ class ProjectImagesAdmin(admin.ModelAdmin):
     pass
 
 
+class FoundersAdmin(admin.ModelAdmin):
+    pass
+
+
+
 admin.site.register(models.Account, AccountsAdmin)
 admin.site.register(models.Category, CategoryAdmin)
 admin.site.register(models.Project, ProjectsAdmin)
 admin.site.register(models.ProjectImage, ProjectImagesAdmin)
+admin.site.register(models.Founder, FoundersAdmin)

@@ -215,3 +215,50 @@ class ProjectsTestCase(TestCase):
         result = response.json()
         assert len(result) == 1, response.json()
         assert result[0]['id'] == self.project_en.id, result
+
+
+class FoundersTestCase(TestCase):
+    def setUp(self):
+        self.founder_1 = models.Founder.objects.create(
+            name='Foo',
+            description='bar',
+
+        )
+        self.founder_2 = models.Founder.objects.create(
+            name='Foo Second UA',
+            description='bar Second UA',
+            en_name='Foo EN',
+            en_description='Bar EN',
+        )
+
+    def test_get_all_founders(self):
+        response = self.client.get('/founders')
+        assert response.status_code == 200, response.json()
+        assert response.json() == [
+            {
+                'id': self.founder_1.id,
+                'name': self.founder_1.name,
+                'description': self.founder_1.description,
+            },
+            {
+                'id': self.founder_2.id,
+                'name': self.founder_2.name,
+                'description': self.founder_2.description,
+            },
+        ], response.json()
+
+    def test_get_all_founders_in_english(self):
+        response = self.client.get('/founders', {'language': 'en'})
+        assert response.status_code == 200, response.json()
+        assert response.json() == [
+            {
+                'id': self.founder_1.id,
+                'name': self.founder_1.en_name,
+                'description': self.founder_1.en_description,
+            },
+            {
+                'id': self.founder_2.id,
+                'name': self.founder_2.en_name,
+                'description': self.founder_2.en_description,
+            },
+        ], response.json()

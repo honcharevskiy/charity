@@ -103,3 +103,14 @@ class RelatedProjects(GenericAPIView):
             related_projects, many=True, context={'request': request}
         )
         return Response(serializer.data)
+
+
+class FoundersList(mixins.ListModelMixin, GenericAPIView):
+    """Serialize list of founders."""
+
+    queryset = models.Founder.objects.all()
+    serializer_class = serializers.FounderSerializer
+
+    def get(self, request, *args, **kwargs):
+        """Return list of Founders."""
+        return self.list(request, *args, **kwargs)

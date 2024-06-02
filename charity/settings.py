@@ -18,7 +18,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 try:
     LOCAL = bool(int(os.getenv('LOCAL', True)))
 except ValueError:
-    LOCAL = True
+    LOCAL = False
 
 
 # Quick-start development settings - unsuitable for production

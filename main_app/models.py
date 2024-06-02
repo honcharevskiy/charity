@@ -106,3 +106,17 @@ class Project(models.Model):
             force_update=force_update,
             update_fields=update_fields,
         )
+
+
+class Founder(models.Model):
+    """Information about founders."""
+
+    name = models.CharField(max_length=255)
+    description = models.CharField(max_length=255)
+
+    en_name = models.CharField(max_length=255)
+    en_description = models.CharField(max_length=255)
+
+    class Meta:
+        verbose_name = 'Founder'
+        verbose_name_plural = 'Founders'
