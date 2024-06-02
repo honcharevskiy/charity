@@ -128,3 +128,36 @@ class FounderSerializer(serializers.ModelSerializer):
             'name',
             'description',
         ]
+
+
+class NewsSerializer(serializers.ModelSerializer):
+    """Serialize project."""
+
+    title = serializers.SerializerMethodField(source='get_title', read_only=True)
+    description = serializers.SerializerMethodField(
+        source='get_description', read_only=True
+    )
+    created_at = serializers.DateTimeField(format='%d/%m/%y')
+
+    def get_title(self, news: models.Project) -> str:
+        """Chose default or en title based on language."""
+        if self.context['request'].language == settings.DEFAULT_LANGUAGE:
+            return news.title
+
+        return news.en_title
+
+    def get_description(self, news: models.Project) -> str:
+        """Chose default or en description based on language."""
+        if self.context['request'].language == settings.DEFAULT_LANGUAGE:
+            return news.description
+
+        return news.en_description
+
+    class Meta:
+        model = models.News
+        fields = [
+            'id',
+            'title',
+            'description',
+            'created_at',
+        ]

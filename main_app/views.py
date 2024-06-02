@@ -17,6 +17,7 @@ def index(request):
 class AccountsList(mixins.ListModelMixin, GenericAPIView):
     queryset = models.Account.objects.all()
     serializer_class = serializers.AccountSerializer
+    pagination_class = None
 
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
@@ -25,6 +26,7 @@ class AccountsList(mixins.ListModelMixin, GenericAPIView):
 class CategoriesList(mixins.ListModelMixin, GenericAPIView):
     queryset = models.Category.objects.all()
     serializer_class = serializers.CategorySerializer
+    pagination_class = None
 
     @extend_schema(
         parameters=[
@@ -42,9 +44,9 @@ class CategoriesList(mixins.ListModelMixin, GenericAPIView):
     def filter_queryset(self, queryset):
         """Keep only those categories that translated to current language."""
         if self.request.language != settings.DEFAULT_LANGUAGE:
-            return models.Category.objects.exclude(en_name__isnull=True)
+            return queryset.exclude(en_name__isnull=True)
 
-        return models.Category.objects.all()
+        return queryset
 
 
 class ProjectList(ReadOnlyModelViewSet, GenericAPIView):
@@ -77,13 +79,13 @@ class ProjectList(ReadOnlyModelViewSet, GenericAPIView):
     def filter_queryset(self, queryset):
         """Keep only those project that translated to current language."""
         if self.request.query_params.get('category_id'):
-            self.queryset = self.queryset.filter(
+            queryset = self.queryset.filter(
                 category=self.request.query_params.get('category_id'),
             )
         if self.request.language != settings.DEFAULT_LANGUAGE:
-            return self.queryset.filter(en_timeline=True)
+            return queryset.filter(en_timeline=True)
 
-        return self.queryset.filter(ua_timeline=True)
+        return queryset.filter(ua_timeline=True)
 
 
 class RelatedProjects(GenericAPIView):
@@ -110,7 +112,43 @@ class FoundersList(mixins.ListModelMixin, GenericAPIView):
 
     queryset = models.Founder.objects.all()
     serializer_class = serializers.FounderSerializer
+    pagination_class = None
 
+    @extend_schema(
+        parameters=[
+            OpenApiParameter(
+                name='language',
+                description='Expected response language',
+                required=False,
+                type=str,
+            ),
+        ]
+    )
     def get(self, request, *args, **kwargs):
         """Return list of Founders."""
         return self.list(request, *args, **kwargs)
+
+
+class NewsList(ReadOnlyModelViewSet, GenericAPIView):
+    queryset = models.News.objects.all().order_by('-created_at')
+    serializer_class = serializers.NewsSerializer
+
+    @extend_schema(
+        parameters=[
+            OpenApiParameter(
+                name='language',
+                description='Expected response language',
+                required=False,
+                type=str,
+            ),
+        ]
+    )
+    def list(self, request: HttpRequest):
+        return super(NewsList, self).list(request)
+
+    def filter_queryset(self, queryset):
+        """Keep only those categories that translated to current language."""
+        if self.request.language != settings.DEFAULT_LANGUAGE:
+            return queryset.filter(en_timeline=True)
+
+        return queryset

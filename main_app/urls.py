@@ -4,7 +4,8 @@ from rest_framework.routers import DefaultRouter
 from main_app import views
 
 router = DefaultRouter()
-router.register(r'projects', views.ProjectList, basename='user')
+router.register(r'projects', views.ProjectList, basename='projects')
+router.register(r'news', views.NewsList, basename='news')
 
 urlpatterns = [
     path('', views.index, name='index'),

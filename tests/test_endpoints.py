@@ -262,3 +262,55 @@ class FoundersTestCase(TestCase):
                 'description': self.founder_2.en_description,
             },
         ], response.json()
+
+
+class NewsTestCase(TestCase):
+    """Test logic related to news endpoints."""
+
+    def setUp(self) -> None:
+        self.news_1 = models.News.objects.create(
+            title='Foo UA',
+            description='description UA',
+        )
+        self.news_with_en = models.News.objects.create(
+            title='Bar UA',
+            description='description bar UA',
+            en_title='Bar EN',
+            en_description='description bar EN',
+        )
+        self.news_with_en_2 = models.News.objects.create(
+            title='Baz UA',
+            description='description baz UA',
+            en_title='Baz EN',
+            en_description='description baz EN',
+        )
+
+    def get_news(self):
+        response = self.client.get('/news/')
+        assert response.status_code == 200
+        assert len(response.json()['results']) == 3
+
+    def test_get_news_in_english(self):
+        response = self.client.get('/news/', {'language': 'en'})
+        assert response.status_code == 200
+        assert len(response.json()['results']) == 2
+
+    def test_get_single_news(self):
+        response = self.client.get(f'/news/{self.news_with_en.id}/')
+        assert response.status_code == 200
+        assert response.json() == {
+            'id': self.news_with_en.id,
+            'title': self.news_with_en.title,
+            'description': self.news_with_en.description,
+            'created_at': self.news_with_en.created_at.strftime('%d/%m/%y')
+        }
+
+    def test_get_single_news_in_english(self):
+        response = self.client.get(f'/news/{self.news_with_en.id}/', {'language': 'en'})
+        assert response.status_code == 200, response.status_code
+        assert response.json() == {
+            'id': self.news_with_en.id,
+            'title': self.news_with_en.en_title,
+            'description': self.news_with_en.en_description,
+            'created_at': self.news_with_en.created_at.strftime('%d/%m/%y')
+        }

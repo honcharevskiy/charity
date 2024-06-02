@@ -30,9 +30,13 @@ class FoundersAdmin(admin.ModelAdmin):
     pass
 
 
+class NewsAdmin(admin.ModelAdmin):
+    exclude = ['ua_timeline', 'en_timeline', 'created_at', 'updated_at']
+
 
 admin.site.register(models.Account, AccountsAdmin)
 admin.site.register(models.Category, CategoryAdmin)
 admin.site.register(models.Project, ProjectsAdmin)
 admin.site.register(models.ProjectImage, ProjectImagesAdmin)
 admin.site.register(models.Founder, FoundersAdmin)
+admin.site.register(models.News, NewsAdmin)

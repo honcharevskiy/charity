@@ -123,3 +123,38 @@ class Founder(models.Model):
     class Meta:
         verbose_name = 'Founder'
         verbose_name_plural = 'Founders'
+
+
+class News(models.Model):
+    """Information about news."""
+
+    title = models.CharField(max_length=255)
+    description = MDTextField()
+
+    en_title = models.CharField(max_length=255, blank=True, null=True)
+    en_description = MDTextField(blank=True, null=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    ua_timeline = models.BooleanField(default=True, blank=True)
+    en_timeline = models.BooleanField(default=False, blank=True)
+
+    def __str__(self):
+        return f'{self.title or self.en_title}'
+
+    def save(
+        self, force_insert=False, force_update=False, using=None, update_fields=None
+    ):
+        """Set fields on save."""
+        self.en_timeline = all([self.en_title, self.en_description])
+        self.ua_timeline = all([self.title, self.description])
+        super().save(
+            force_insert=force_insert,
+            force_update=force_update,
+            update_fields=update_fields,
+        )
+
+    class Meta:
+        verbose_name = 'News'
+        verbose_name_plural = 'News'
