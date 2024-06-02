@@ -117,6 +117,9 @@ class Founder(models.Model):
     en_name = models.CharField(max_length=255)
     en_description = models.CharField(max_length=255)
 
+    def __str__(self):
+        return f'{self.name or self.en_name}'
+
     class Meta:
         verbose_name = 'Founder'
         verbose_name_plural = 'Founders'
