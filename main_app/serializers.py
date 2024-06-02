@@ -12,6 +12,14 @@ class AccountSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class ImageSerializer(serializers.ModelSerializer):
+    """Serialize image fields."""
+
+    class Meta:
+        model = models.Image
+        fields = '__all__'
+
+
 class CategorySerializer(serializers.ModelSerializer):
     """Serialize category."""
 
@@ -106,6 +114,7 @@ class FounderSerializer(serializers.ModelSerializer):
     description = serializers.SerializerMethodField(
         source='get_description', read_only=True
     )
+    picture = ImageSerializer()
 
     def get_name(self, founder: models.Founder) -> str:
         """Chose default or en title based on language."""
@@ -127,6 +136,7 @@ class FounderSerializer(serializers.ModelSerializer):
             'id',
             'name',
             'description',
+            'picture',
         ]
 
 

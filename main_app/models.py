@@ -3,6 +3,20 @@ from django_resized import ResizedImageField
 from mdeditor.fields import MDTextField
 
 
+class Image(models.Model):
+    """Image with alternative text."""
+
+    image = ResizedImageField(size=[1000, 800], force_format='JPEG')
+    alternative_text = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.alternative_text
+
+    class Meta:
+        verbose_name = 'Image'
+        verbose_name_plural = 'Images'
+
+
 class Account(models.Model):
     """Accounts information."""
 
@@ -35,31 +49,14 @@ class Category(models.Model):
     en_statistic_info = models.CharField(max_length=255, null=True, blank=True)
     en_statistic_additional_info = models.CharField(max_length=255, null=True, blank=True)
 
+    picture = models.ForeignKey(Image, on_delete=models.DO_NOTHING, blank=True, null=True)
+
     def __str__(self):
         return f'{self.name}'
 
     class Meta:
         verbose_name = 'Category'
         verbose_name_plural = 'Categories'
-
-
-class ProjectImage(models.Model):
-    """Image related to project."""
-
-    image = ResizedImageField(size=[1000, 800], force_format='JPEG')
-    alternative_text = models.CharField(max_length=255)
-
-    def __str__(self):
-        return self.alternative_text
-
-    @classmethod
-    def _update_filename(cls, project_image: 'ProjectImage', filename: str):
-        """Generate file name for image."""
-        return
-
-    class Meta:
-        verbose_name = 'Image'
-        verbose_name_plural = 'Images'
 
 
 class Project(models.Model):
@@ -80,7 +77,7 @@ class Project(models.Model):
     en_timeline = models.BooleanField(default=False, blank=True)
 
     accounts = models.ManyToManyField(Account)
-    images = models.ManyToManyField(ProjectImage, null=True, blank=True)
+    images = models.ManyToManyField(Image, null=True, blank=True)
     category = models.ForeignKey(Category, on_delete=models.DO_NOTHING)
 
     is_finished = models.BooleanField(default=False)
@@ -114,6 +111,8 @@ class Founder(models.Model):
     name = models.CharField(max_length=255)
     description = models.CharField(max_length=255)
 
+    picture = models.ForeignKey(Image, blank=True, null=True, on_delete=models.DO_NOTHING)
+
     en_name = models.CharField(max_length=255)
     en_description = models.CharField(max_length=255)
 
@@ -130,6 +129,7 @@ class News(models.Model):
 
     title = models.CharField(max_length=255)
     description = MDTextField()
+    picture = models.ForeignKey(Image, on_delete=models.DO_NOTHING, blank=True, null=True)
 
     en_title = models.CharField(max_length=255, blank=True, null=True)
     en_description = MDTextField(blank=True, null=True)
