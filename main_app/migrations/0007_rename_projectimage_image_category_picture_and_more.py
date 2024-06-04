@@ -5,7 +5,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('main_app', '0006_founder_picture'),
     ]
@@ -18,11 +17,21 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='category',
             name='picture',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.DO_NOTHING, to='main_app.image'),
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.DO_NOTHING,
+                to='main_app.image',
+            ),
         ),
         migrations.AddField(
             model_name='news',
             name='picture',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.DO_NOTHING, to='main_app.image'),
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.DO_NOTHING,
+                to='main_app.image',
+            ),
         ),
     ]

@@ -4,7 +4,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('main_app', '0003_alter_project_images'),
     ]
@@ -13,7 +12,15 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Founder',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                (
+                    'id',
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name='ID',
+                    ),
+                ),
                 ('name', models.CharField(max_length=255)),
                 ('description', models.CharField(max_length=255)),
                 ('en_name', models.CharField(max_length=255)),

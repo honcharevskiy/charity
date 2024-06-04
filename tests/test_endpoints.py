@@ -222,7 +222,6 @@ class FoundersTestCase(TestCase):
         self.founder_1 = models.Founder.objects.create(
             name='Foo',
             description='bar',
-
         )
         self.founder_2 = models.Founder.objects.create(
             name='Foo Second UA',
@@ -302,7 +301,7 @@ class NewsTestCase(TestCase):
             'id': self.news_with_en.id,
             'title': self.news_with_en.title,
             'description': self.news_with_en.description,
-            'created_at': self.news_with_en.created_at.strftime('%d/%m/%y')
+            'created_at': self.news_with_en.created_at.strftime('%d/%m/%y'),
         }
 
     def test_get_single_news_in_english(self):
@@ -312,5 +311,5 @@ class NewsTestCase(TestCase):
             'id': self.news_with_en.id,
             'title': self.news_with_en.en_title,
             'description': self.news_with_en.en_description,
-            'created_at': self.news_with_en.created_at.strftime('%d/%m/%y')
+            'created_at': self.news_with_en.created_at.strftime('%d/%m/%y'),
         }

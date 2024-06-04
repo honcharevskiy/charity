@@ -5,7 +5,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('main_app', '0004_founder'),
     ]
@@ -14,7 +13,15 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='News',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                (
+                    'id',
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name='ID',
+                    ),
+                ),
                 ('title', models.CharField(max_length=255)),
                 ('description', mdeditor.fields.MDTextField()),
                 ('en_title', models.CharField(blank=True, max_length=255, null=True)),
