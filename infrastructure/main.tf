@@ -11,6 +11,10 @@ terraform {
 resource "aws_key_pair" "deployer" {
   key_name   = "deployer-key"
   public_key = file("~/.ssh/id_rsa.pub") # Path to your public key
+
+  tags = {
+    Name = "charity"
+  }
 }
 
 
@@ -21,6 +25,7 @@ resource "aws_instance" "django_instance" {
   key_name        = aws_key_pair.deployer.key_name
   subnet_id       = aws_subnet.public.id
   vpc_security_group_ids = [aws_security_group.server.id]
+  iam_instance_profile = aws_iam_instance_profile.ec2_instance_profile.name
 
   user_data = <<-EOF
               #!/bin/bash
@@ -109,11 +114,16 @@ resource "aws_instance" "django_instance" {
               }
               EOL
 
+              sudo chown root:root /var/lib/nginx/
+              sudo chmod 0755 /var/lib/nginx
+              sudo chmod 0755 /var/lib/nginx/tmp/
+              sudo chmod 0755 /var/lib/nginx/tmp/client_body/
+
               sudo systemctl restart nginx
               sudo systemctl enable nginx
               EOF
 
   tags = {
-    Name = "Charity"
+    Name = "charity"
   }
 }

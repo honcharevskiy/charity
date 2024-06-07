@@ -1,5 +1,9 @@
 resource "aws_vpc" "main" {
   cidr_block = "10.0.0.0/16"
+
+  tags = {
+    Name = "charity"
+  }
 }
 
 resource "aws_subnet" "public" {
@@ -8,7 +12,8 @@ resource "aws_subnet" "public" {
   map_public_ip_on_launch = true
 
   tags = {
-    Name = "Public subnet"
+    Name = "charity"
+    Description = "Public subnet"
   }
 }
 
@@ -18,7 +23,8 @@ resource "aws_subnet" "private_1" {
   availability_zone = var.availability_zones[0]
 
   tags = {
-    Name = "First Private subnet"
+    Name = "charity"
+    Description = "First Private subnet"
   }
 }
 
@@ -28,13 +34,18 @@ resource "aws_subnet" "private_2" {
   availability_zone = var.availability_zones[1]
 
   tags = {
-    Name = "Second Private subnet"
+    Name = "charity"
+    Description = "Second Private subnet"
   }
 }
 
 
 resource "aws_internet_gateway" "charity_gw" {
   vpc_id = aws_vpc.main.id
+
+  tags = {
+    Name = "charity"
+  }
 }
 
 resource "aws_route_table" "public" {
@@ -43,6 +54,10 @@ resource "aws_route_table" "public" {
   route {
     cidr_block = "0.0.0.0/0"
     gateway_id = aws_internet_gateway.charity_gw.id
+  }
+
+  tags = {
+    Name = "charity"
   }
 }
 
@@ -77,6 +92,10 @@ resource "aws_security_group" "server" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
+
+  tags = {
+    Name = "charity"
+  }
 }
 
 
@@ -95,5 +114,9 @@ resource "aws_security_group" "database" {
     to_port     = 0
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "charity"
   }
 }

@@ -3,7 +3,7 @@ resource "aws_s3_bucket" "pictures" {
   provider = aws.storage
 
   tags = {
-    Name = "Charity"
+    Name = "charity"
   }
 }
 
