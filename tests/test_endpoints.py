@@ -36,6 +36,7 @@ class CategoryTestCase(TestCase):
                     'statistic_counter': 321,
                     'statistic_info': 'Kill Drons',
                     'statistic_additional_info': 'Kill FPV drones',
+                    'picture': None,
                 },
                 {
                     'id': 2,
@@ -44,6 +45,7 @@ class CategoryTestCase(TestCase):
                     'statistic_counter': 123,
                     'statistic_info': 'Drons',
                     'statistic_additional_info': 'FPV drones',
+                    'picture': None,
                 },
             ],
             key=sort_key,
@@ -60,6 +62,7 @@ class CategoryTestCase(TestCase):
                 'statistic_counter': 123,
                 'statistic_info': 'Drones EN',
                 'statistic_additional_info': 'FPV Drones EN',
+                'picture': None,
             }
         ]
 
@@ -205,9 +208,11 @@ class ProjectsTestCase(TestCase):
                 'statistic_info': self.category.statistic_info,
                 'description': self.category.description,
                 'statistic_counter': self.category.statistic_counter,
+                'picture': None,
             },
+            'images': [],
         }
-        assert response.json() == expected
+        assert response.json() == expected, response.json()
 
     def test_get_related_projects(self):
         response = self.client.get(f'/projects/{self.project.id}/related_projects/')
@@ -238,11 +243,13 @@ class FoundersTestCase(TestCase):
                 'id': self.founder_1.id,
                 'name': self.founder_1.name,
                 'description': self.founder_1.description,
+                'picture': None,
             },
             {
                 'id': self.founder_2.id,
                 'name': self.founder_2.name,
                 'description': self.founder_2.description,
+                'picture': None,
             },
         ], response.json()
 
@@ -254,11 +261,13 @@ class FoundersTestCase(TestCase):
                 'id': self.founder_1.id,
                 'name': self.founder_1.en_name,
                 'description': self.founder_1.en_description,
+                'picture': None,
             },
             {
                 'id': self.founder_2.id,
                 'name': self.founder_2.en_name,
                 'description': self.founder_2.en_description,
+                'picture': None,
             },
         ], response.json()
 
@@ -302,6 +311,7 @@ class NewsTestCase(TestCase):
             'title': self.news_with_en.title,
             'description': self.news_with_en.description,
             'created_at': self.news_with_en.created_at.strftime('%d/%m/%y'),
+            'picture': None,
         }
 
     def test_get_single_news_in_english(self):
@@ -312,4 +322,5 @@ class NewsTestCase(TestCase):
             'title': self.news_with_en.en_title,
             'description': self.news_with_en.en_description,
             'created_at': self.news_with_en.created_at.strftime('%d/%m/%y'),
+            'picture': None,
         }

@@ -33,6 +33,7 @@ class CategorySerializer(serializers.ModelSerializer):
     statistic_additional_info = serializers.SerializerMethodField(
         source='get_statistic_additional_info', read_only=True
     )
+    picture = ImageSerializer()
 
     def get_name(self, category: models.Category) -> str:
         if self.context['request'].language == settings.DEFAULT_LANGUAGE:
@@ -67,6 +68,7 @@ class CategorySerializer(serializers.ModelSerializer):
             'statistic_info',
             'description',
             'statistic_counter',
+            'picture',
         ]
 
 
@@ -79,6 +81,7 @@ class ProjectSerializer(serializers.ModelSerializer):
     )
     category = CategorySerializer()
     accounts = AccountSerializer(many=True)
+    images = ImageSerializer(many=True)
 
     def get_title(self, project: models.Project) -> str:
         """Chose default or en title based on language."""
@@ -104,6 +107,7 @@ class ProjectSerializer(serializers.ModelSerializer):
             'accumulated_current',
             'accounts',
             'category',
+            'images',
         ]
 
 
@@ -148,6 +152,7 @@ class NewsSerializer(serializers.ModelSerializer):
         source='get_description', read_only=True
     )
     created_at = serializers.DateTimeField(format='%d/%m/%y')
+    picture = ImageSerializer()
 
     def get_title(self, news: models.Project) -> str:
         """Chose default or en title based on language."""
@@ -170,4 +175,5 @@ class NewsSerializer(serializers.ModelSerializer):
             'title',
             'description',
             'created_at',
+            'picture',
         ]
