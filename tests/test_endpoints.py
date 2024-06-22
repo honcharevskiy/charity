@@ -4,14 +4,14 @@ from main_app import models
 
 class CategoryTestCase(TestCase):
     def setUp(self):
-        models.Category.objects.create(
+        self.first_category: models.Category = models.Category.objects.create(
             name='Kill',
             description='Kill long description',
             statistic_counter=321,
             statistic_info='Kill Drons',
             statistic_additional_info='Kill FPV drones',
         )
-        models.Category.objects.create(
+        self.second_category: models.Category = models.Category.objects.create(
             name='Humanitarian',
             en_name='Not to kill',
             description='long description',
@@ -24,7 +24,7 @@ class CategoryTestCase(TestCase):
         )
 
     def test_get_all_categories(self):
-        response = self.client.get('/categories')
+        response = self.client.get('/categories/')
         assert response.status_code == 200
         sort_key = lambda x: x['id']
         assert sorted(response.json(), key=sort_key) == sorted(
@@ -52,7 +52,7 @@ class CategoryTestCase(TestCase):
         )
 
     def test_get_all_categories_in_en(self):
-        response = self.client.get('/categories', {'language': 'en'})
+        response = self.client.get('/categories/', {'language': 'en'})
         assert response.status_code == 200
         assert response.json() == [
             {
@@ -65,6 +65,19 @@ class CategoryTestCase(TestCase):
                 'picture': None,
             }
         ]
+
+    def get_single_category(self):
+        response = self.client.get(f'/categories/{self.first_category.id}/')
+        assert response.status_code == 200
+        assert response.json() == {
+            'id': self.first_category.id,
+            'name': self.first_category.name,
+            'description': self.first_category.description,
+            'statistic_counter': self.first_category.statistic_counter,
+            'statistic_info': self.first_category.statistic_info,
+            'statistic_additional_info': self.first_category.statistic_additional_info,
+            'picture': None,
+        }
 
 
 class AccountsTestCase(TestCase):

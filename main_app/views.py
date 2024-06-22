@@ -23,7 +23,7 @@ class AccountsList(mixins.ListModelMixin, GenericAPIView):
         return self.list(request, *args, **kwargs)
 
 
-class CategoriesList(mixins.ListModelMixin, GenericAPIView):
+class CategoriesList(ReadOnlyModelViewSet, GenericAPIView):
     queryset = models.Category.objects.all()
     serializer_class = serializers.CategorySerializer
     pagination_class = None
@@ -38,8 +38,8 @@ class CategoriesList(mixins.ListModelMixin, GenericAPIView):
             ),
         ]
     )
-    def get(self, request: HttpRequest, *args, **kwargs):
-        return self.list(request, *args, **kwargs)
+    def list(self, request: HttpRequest):
+        return super(CategoriesList, self).list(request)
 
     def filter_queryset(self, queryset):
         """Keep only those categories that translated to current language."""
