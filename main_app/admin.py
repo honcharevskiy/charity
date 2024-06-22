@@ -1,5 +1,6 @@
 from django.contrib import admin
 from main_app import models
+from django.contrib.auth.models import User, Group
 
 
 class AccountsAdmin(admin.ModelAdmin):
@@ -40,3 +41,5 @@ admin.site.register(models.Project, ProjectsAdmin)
 admin.site.register(models.Image, ProjectImagesAdmin)
 admin.site.register(models.Founder, FoundersAdmin)
 admin.site.register(models.News, NewsAdmin)
+admin.site.unregister(User)
+admin.site.unregister(Group)

@@ -4,3 +4,7 @@ format:
 
 test:
 	python manage.py test
+
+
+local:
+	python manage.py runserver
