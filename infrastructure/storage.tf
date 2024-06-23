@@ -35,3 +35,13 @@ resource "aws_s3_bucket_acl" "example" {
   bucket = aws_s3_bucket.pictures.id
   acl    = "public-read"
 }
+
+resource "aws_s3_bucket_cors_configuration" "example" {
+  bucket = aws_s3_bucket.pictures.id
+  provider = aws.storage
+
+  cors_rule {
+    allowed_methods = ["GET"]
+    allowed_origins = ["*"]
+  }
+}
