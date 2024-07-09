@@ -8,6 +8,7 @@ class AccountsAdmin(admin.ModelAdmin):
 
 
 class CategoryAdmin(admin.ModelAdmin):
+    prepopulated_fields = {'slug': ('en_name',)}
     pass
 
 
@@ -20,7 +21,7 @@ class AccountInline(admin.TabularInline):
 class ProjectsAdmin(admin.ModelAdmin):
     exclude = ['ua_timeline', 'en_timeline', 'accounts']
     inlines = [AccountInline]
-    pass
+    prepopulated_fields = {'slug': ('en_name',)}
 
 
 class ProjectImagesAdmin(admin.ModelAdmin):
@@ -33,6 +34,7 @@ class FoundersAdmin(admin.ModelAdmin):
 
 class NewsAdmin(admin.ModelAdmin):
     exclude = ['ua_timeline', 'en_timeline', 'created_at', 'updated_at']
+    prepopulated_fields = {'slug': ('en_title',)}
 
 
 admin.site.register(models.Account, AccountsAdmin)

@@ -27,6 +27,7 @@ class CategoriesList(ReadOnlyModelViewSet, GenericAPIView):
     queryset = models.Category.objects.all()
     serializer_class = serializers.CategorySerializer
     pagination_class = None
+    lookup_field = 'slug'
 
     @extend_schema(
         parameters=[
@@ -52,6 +53,7 @@ class CategoriesList(ReadOnlyModelViewSet, GenericAPIView):
 class ProjectList(ReadOnlyModelViewSet, GenericAPIView):
     queryset = models.Project.objects.filter(is_finished=False)
     serializer_class = serializers.ProjectSerializer
+    lookup_field = 'slug'
 
     @extend_schema(
         parameters=[
@@ -132,6 +134,7 @@ class FoundersList(mixins.ListModelMixin, GenericAPIView):
 class NewsList(ReadOnlyModelViewSet, GenericAPIView):
     queryset = models.News.objects.all().order_by('-created_at')
     serializer_class = serializers.NewsSerializer
+    lookup_field = 'slug'
 
     @extend_schema(
         parameters=[

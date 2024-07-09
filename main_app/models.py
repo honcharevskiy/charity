@@ -51,6 +51,8 @@ class Category(models.Model):
 
     picture = models.ForeignKey(Image, on_delete=models.DO_NOTHING, blank=True, null=True)
 
+    slug = models.SlugField(unique=True)
+
     def __str__(self):
         return f'{self.name}'
 
@@ -79,6 +81,8 @@ class Project(models.Model):
     accounts = models.ManyToManyField(Account)
     images = models.ManyToManyField(Image, null=True, blank=True)
     category = models.ForeignKey(Category, on_delete=models.DO_NOTHING)
+
+    slug = models.SlugField(unique=True)
 
     is_finished = models.BooleanField(default=False)
 
@@ -133,6 +137,8 @@ class News(models.Model):
 
     en_title = models.CharField(max_length=255, blank=True, null=True)
     en_description = MDTextField(blank=True, null=True)
+
+    slug = models.SlugField(unique=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

@@ -1,9 +1,9 @@
 format:
-	python -m ruff format
+	poetry run python -m ruff format
 
 
 test:
-	python manage.py test
+	poetry run python manage.py test
 
 
 local:

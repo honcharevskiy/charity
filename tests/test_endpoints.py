@@ -10,6 +10,7 @@ class CategoryTestCase(TestCase):
             statistic_counter=321,
             statistic_info='Kill Drons',
             statistic_additional_info='Kill FPV drones',
+            slug='first-category',
         )
         self.second_category: models.Category = models.Category.objects.create(
             name='Humanitarian',
@@ -21,6 +22,7 @@ class CategoryTestCase(TestCase):
             statistic_additional_info='FPV drones',
             en_statistic_info='Drones EN',
             en_statistic_additional_info='FPV Drones EN',
+            slug='second-category',
         )
 
     def test_get_all_categories(self):
@@ -67,7 +69,7 @@ class CategoryTestCase(TestCase):
         ]
 
     def get_single_category(self):
-        response = self.client.get(f'/categories/{self.first_category.id}/')
+        response = self.client.get(f'/categories/{self.first_category.slug}/')
         assert response.status_code == 200
         assert response.json() == {
             'id': self.first_category.id,
@@ -110,16 +112,21 @@ class ProjectsTestCase(TestCase):
     def setUp(self):
         self.account = models.Account.objects.create(title='Mono', iban='1234')
         self.category = models.Category.objects.create(
-            name='Humanitarian', en_name='Not to kill'
+            name='Humanitarian', en_name='Not to kill', slug='first-project-category'
         )
-        self.category_2 = models.Category.objects.create(name='For kill')
-        self.category_3 = models.Category.objects.create(name='For children of Donbass')
+        self.category_2 = models.Category.objects.create(
+            name='For kill', slug='second-project-category'
+        )
+        self.category_3 = models.Category.objects.create(
+            name='For children of Donbass', slug='third-project-category'
+        )
         self.project = models.Project.objects.create(
             category=self.category,
             title='UA title',
             description='UA description',
             goal=10000000,
             accumulated_current=1,
+            slug='first-project',
         )
         self.project.save()
         self.project.accounts.add(self.account)
@@ -131,6 +138,7 @@ class ProjectsTestCase(TestCase):
             en_description='EN description',
             goal=10000000,
             accumulated_current=1,
+            slug='second-project',
         )
         self.project_en.save()
         self.project_en.accounts.add(self.account)
@@ -141,6 +149,7 @@ class ProjectsTestCase(TestCase):
             description='UA description 2',
             goal=10000000,
             accumulated_current=1,
+            slug='third-project',
         )
         self.project_diff_category.save()
         self.project_diff_category.accounts.add(self.account)
@@ -153,6 +162,7 @@ class ProjectsTestCase(TestCase):
             en_description='EN description 2',
             goal=10000000,
             accumulated_current=1,
+            slug='fourth-project',
         )
         self.project_diff_category_and_language.save()
         self.project_diff_category_and_language.accounts.add(self.account)
@@ -199,7 +209,7 @@ class ProjectsTestCase(TestCase):
         assert len(first_response.json()) == len(second_response.json())
 
     def test_get_single_project(self):
-        response = self.client.get(f'/projects/{self.project_en.id}/')
+        response = self.client.get(f'/projects/{self.project_en.slug}/')
         expected = {
             'id': self.project_en.id,
             'title': 'UA title',
@@ -292,18 +302,21 @@ class NewsTestCase(TestCase):
         self.news_1 = models.News.objects.create(
             title='Foo UA',
             description='description UA',
+            slug='first',
         )
         self.news_with_en = models.News.objects.create(
             title='Bar UA',
             description='description bar UA',
             en_title='Bar EN',
             en_description='description bar EN',
+            slug='second',
         )
         self.news_with_en_2 = models.News.objects.create(
             title='Baz UA',
             description='description baz UA',
             en_title='Baz EN',
             en_description='description baz EN',
+            slug='third',
         )
 
     def get_news(self):
@@ -317,7 +330,7 @@ class NewsTestCase(TestCase):
         assert len(response.json()['results']) == 2
 
     def test_get_single_news(self):
-        response = self.client.get(f'/news/{self.news_with_en.id}/')
+        response = self.client.get(f'/news/{self.news_with_en.slug}/')
         assert response.status_code == 200
         assert response.json() == {
             'id': self.news_with_en.id,
@@ -325,10 +338,11 @@ class NewsTestCase(TestCase):
             'description': self.news_with_en.description,
             'created_at': self.news_with_en.created_at.strftime('%d/%m/%y'),
             'picture': None,
+            'slug': 'second',
         }
 
     def test_get_single_news_in_english(self):
-        response = self.client.get(f'/news/{self.news_with_en.id}/', {'language': 'en'})
+        response = self.client.get(f'/news/{self.news_with_en.slug}/', {'language': 'en'})
         assert response.status_code == 200, response.status_code
         assert response.json() == {
             'id': self.news_with_en.id,
@@ -336,4 +350,5 @@ class NewsTestCase(TestCase):
             'description': self.news_with_en.en_description,
             'created_at': self.news_with_en.created_at.strftime('%d/%m/%y'),
             'picture': None,
+            'slug': 'second',
         }

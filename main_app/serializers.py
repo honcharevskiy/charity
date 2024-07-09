@@ -69,6 +69,7 @@ class CategorySerializer(serializers.ModelSerializer):
             'description',
             'statistic_counter',
             'picture',
+            'slug',
         ]
 
 
@@ -108,6 +109,7 @@ class ProjectSerializer(serializers.ModelSerializer):
             'accounts',
             'category',
             'images',
+            'slug',
         ]
 
 
@@ -176,4 +178,5 @@ class NewsSerializer(serializers.ModelSerializer):
             'description',
             'created_at',
             'picture',
+            'slug',
         ]
