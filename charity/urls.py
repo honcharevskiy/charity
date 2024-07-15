@@ -21,6 +21,8 @@ from django.urls import path, include
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 
 from charity import settings
+from charity.sitemap import sitemaps
+from django.contrib.sitemaps.views import sitemap
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -31,6 +33,12 @@ urlpatterns = [
         'api/schema/swagger-ui/',
         SpectacularSwaggerView.as_view(url_name='schema'),
         name='swagger-ui',
+    ),
+    path(
+        'sitemap.xml',
+        sitemap,
+        sitemaps,
+        name='django.contrib.sitemaps.views.sitemap',
     ),
 ]
 

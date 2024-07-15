@@ -40,6 +40,8 @@ ALLOWED_HOSTS = ['*']
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
+    'django.contrib.sites',
+    'django.contrib.sitemaps',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
@@ -50,6 +52,8 @@ INSTALLED_APPS = [
     'drf_spectacular',
     'corsheaders',
 ]
+
+SITE_ID = 1
 
 REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
@@ -205,4 +209,4 @@ else:
 
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'staticfiles'),)
 
-DEFAULT_LANGUAGE = 'ua'
+DEFAULT_LANGUAGE = 'uk'

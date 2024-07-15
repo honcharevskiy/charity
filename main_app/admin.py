@@ -21,7 +21,7 @@ class AccountInline(admin.TabularInline):
 class ProjectsAdmin(admin.ModelAdmin):
     exclude = ['ua_timeline', 'en_timeline', 'accounts']
     inlines = [AccountInline]
-    prepopulated_fields = {'slug': ('en_name',)}
+    prepopulated_fields = {'slug': ('en_title',)}
 
 
 class ProjectImagesAdmin(admin.ModelAdmin):

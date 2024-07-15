@@ -1,5 +1,6 @@
 format:
 	poetry run python -m ruff format
+	poetry run python -m ruff check --fix 
 
 
 test:
@@ -7,4 +8,4 @@ test:
 
 
 local:
-	python manage.py runserver
+	poetry run python manage.py runserver

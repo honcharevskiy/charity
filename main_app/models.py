@@ -1,6 +1,7 @@
 from django.db import models
 from django_resized import ResizedImageField
 from mdeditor.fields import MDTextField
+from django.urls import reverse
 
 
 class Image(models.Model):
@@ -52,6 +53,13 @@ class Category(models.Model):
     picture = models.ForeignKey(Image, on_delete=models.DO_NOTHING, blank=True, null=True)
 
     slug = models.SlugField(unique=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def get_absolute_url(self):
+        """Return url to the specific category."""
+        return reverse('categories-detail', kwargs={'slug': self.slug})
 
     def __str__(self):
         return f'{self.name}'
@@ -108,6 +116,11 @@ class Project(models.Model):
             update_fields=update_fields,
         )
 
+    def get_absolute_url(self):
+        """Generate url to the specific Project."""
+        return reverse('projects-detail', kwargs={'slug': self.slug})
+        pass
+
 
 class Founder(models.Model):
     """Information about founders."""
@@ -160,6 +173,10 @@ class News(models.Model):
             force_update=force_update,
             update_fields=update_fields,
         )
+
+    def get_absolute_url(self):
+        """Generate url to the specific News."""
+        return reverse('news-detail', kwargs={'slug': self.slug})
 
     class Meta:
         verbose_name = 'News'

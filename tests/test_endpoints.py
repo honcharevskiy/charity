@@ -28,8 +28,7 @@ class CategoryTestCase(TestCase):
     def test_get_all_categories(self):
         response = self.client.get('/categories/')
         assert response.status_code == 200
-        sort_key = lambda x: x['id']
-        assert sorted(response.json(), key=sort_key) == sorted(
+        assert sorted(response.json(), key=lambda x: x['id']) == sorted(
             [
                 {
                     'id': 1,
@@ -50,7 +49,7 @@ class CategoryTestCase(TestCase):
                     'picture': None,
                 },
             ],
-            key=sort_key,
+            key=lambda x: x['id'],
         )
 
     def test_get_all_categories_in_en(self):
