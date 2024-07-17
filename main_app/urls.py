@@ -10,8 +10,9 @@ router.register(r'categories', views.CategoriesList, basename='categories')
 
 urlpatterns = [
     path('', views.index, name='index'),
-    path('accounts', views.AccountsList.as_view()),
-    path('founders', views.FoundersList.as_view()),
+    path('accounts/', views.AccountsList.as_view(), name='accounts'),
+    path('founders/', views.FoundersList.as_view(), name='founders'),
+    path('media/', views.MediaList.as_view(), name='media'),
     path('projects/<int:pk>/related_projects/', views.RelatedProjects.as_view()),
     *router.urls,
 ]

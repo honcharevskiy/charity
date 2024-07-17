@@ -180,3 +180,28 @@ class NewsSerializer(serializers.ModelSerializer):
             'picture',
             'slug',
         ]
+
+
+class MediaSerializer(serializers.ModelSerializer):
+    """Serialize meida fields."""
+
+    description = serializers.SerializerMethodField(
+        source='get_description', read_only=True
+    )
+
+    def get_description(self, news: models.Project) -> str:
+        """Chose default or en description based on language."""
+        if self.context['request'].language == settings.DEFAULT_LANGUAGE:
+            return news.description
+
+        return news.en_description
+
+    class Meta:
+        model = models.Media
+        fields = [
+            'id',
+            'description',
+            'alternative_text',
+            'created_at',
+            'image',
+        ]

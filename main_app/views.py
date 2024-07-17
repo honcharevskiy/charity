@@ -150,8 +150,28 @@ class NewsList(ReadOnlyModelViewSet, GenericAPIView):
         return super(NewsList, self).list(request)
 
     def filter_queryset(self, queryset):
-        """Keep only those categories that translated to current language."""
+        """Keep only those news that translated to current language."""
         if self.request.language != settings.DEFAULT_LANGUAGE:
             return queryset.filter(en_timeline=True)
 
         return queryset
+
+
+class MediaList(mixins.ListModelMixin, GenericAPIView):
+    """List media."""
+
+    queryset = models.Media.objects.all().order_by('-created_at')
+    serializer_class = serializers.MediaSerializer
+
+    @extend_schema(
+        parameters=[
+            OpenApiParameter(
+                name='language',
+                description='Expected response language',
+                required=False,
+                type=str,
+            ),
+        ]
+    )
+    def get(self, request: HttpRequest):
+        return super().list(request)

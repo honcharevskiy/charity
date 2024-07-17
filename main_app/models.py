@@ -181,3 +181,19 @@ class News(models.Model):
     class Meta:
         verbose_name = 'News'
         verbose_name_plural = 'News'
+
+
+class Media(models.Model):
+    """Separate media not related to other entities."""
+
+    image = ResizedImageField(size=[1000, 800], force_format='JPEG')
+    alternative_text = models.CharField(max_length=255)
+
+    description = models.CharField(max_length=400, blank=True, null=True)
+    en_description = models.CharField(max_length=400, blank=True, null=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self) -> str:
+        return self.alternative_text

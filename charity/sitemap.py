@@ -23,7 +23,7 @@ class ProjectsSitemap(Sitemap):
     """Represent model Projects in sitemap."""
 
     changefreq = 'weekly'
-    priority = 0.5
+    priority = 1
 
     def items(self):
         """Return projects that will be displayed in sitemap."""
@@ -38,7 +38,7 @@ class CategoriesSitemap(Sitemap):
     """Represent model Category in sitemap."""
 
     changefreq = 'weekly'
-    priority = 0.5
+    priority = 0.7
 
     def items(self):
         """Return categories that will be displayed in sitemap."""

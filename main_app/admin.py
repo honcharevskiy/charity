@@ -37,11 +37,16 @@ class NewsAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('en_title',)}
 
 
+class MediaAdmin(admin.ModelAdmin):
+    pass
+
+
 admin.site.register(models.Account, AccountsAdmin)
 admin.site.register(models.Category, CategoryAdmin)
 admin.site.register(models.Project, ProjectsAdmin)
 admin.site.register(models.Image, ProjectImagesAdmin)
 admin.site.register(models.Founder, FoundersAdmin)
 admin.site.register(models.News, NewsAdmin)
+admin.site.register(models.Media, MediaAdmin)
 admin.site.unregister(User)
 admin.site.unregister(Group)
